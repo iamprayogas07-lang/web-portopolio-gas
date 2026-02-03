@@ -1,17 +1,25 @@
-<style>
-body {
-font-family: system-ui, sans-serif;
-max-width: 600px;
-margin: auto;
-padding: 20px;
-}
-input, textarea, button {
-width: 100%;
-margin-bottom: 12px;
-padding: 10px;
-}
-button {
-cursor: pointer;
+const SHEET_ID = 'PASTE_SPREADSHEET_ID_HERE';
+
+
+function doGet() {
+return HtmlService.createTemplateFromFile('index')
+.evaluate()
+.setTitle('Contact Form');
 }
 
-</style>
+
+function include(filename) {
+return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+
+function submitForm(data) {
+const sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+sheet.appendRow([
+new Date(),
+data.name,
+data.email,
+data.message
+]);
+return 'success';
+}
